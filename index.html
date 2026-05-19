@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Data Communications Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #00e5a0;
+    --accent2: #0ea5e9;
+    --accent3: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: rgba(0,229,160,0.15);
+    --green-bio: #16a34a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,14,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+    color: var(--accent); letter-spacing: 0.04em; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.85rem;
+    font-family: 'Space Mono', monospace; letter-spacing: 0.05em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 4rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,229,160,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.04) 1px, transparent 1px);
+    background-size: 48px 48px; pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute; top: -200px; right: -200px; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 70%); pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: 0.75rem;
+    color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px;
+    border-radius: 2px; margin-bottom: 1.5rem; letter-spacing: 0.1em; animation: fadeUp 0.6s ease both;
+  }
+  .hero-title {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.05; margin-bottom: 1.5rem; animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--muted); max-width: 540px;
+    margin-bottom: 2.5rem; animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
+    border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.8rem;
+    letter-spacing: 0.06em; text-decoration: none; cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #0a0e17; font-weight: 700; }
+  .btn-primary:hover { background: #00c98a; transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn-outline:hover { background: rgba(0,229,160,0.08); transform: translateY(-2px); }
+
+  /* TICKER */
+  .ticker-wrap { background: var(--accent); overflow: hidden; padding: 10px 0; }
+  .ticker { display: flex; gap: 4rem; animation: ticker 20s linear infinite; white-space: nowrap; }
+  .ticker span { font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0a0e17; letter-spacing: 0.1em; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  section { padding: 6rem 4rem; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.1; margin-bottom: 1rem; }
+  .section-title span { color: var(--accent); }
+  .section-desc { color: var(--muted); max-width: 600px; margin-bottom: 3rem; font-size: 1rem; }
+
+  /* ABOUT */
+  #about { background: var(--surface); }
+  .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: center; }
+  .profile-card {
+    background: transparent; border-radius: 8px; overflow: hidden; position: relative;
+    aspect-ratio: 3/4; display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 1.5rem; box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  }
+  .profile-avatar { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .avatar-svg { width: 75%; opacity: 0.85; }
+  .profile-info { position: relative; z-index: 2; background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); border-radius: 6px; padding: 1rem; }
+  .profile-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: #fff; }
+  .profile-id { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--accent); }
+  .about-text h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 1rem; }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; }
+  .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+  .stat-box { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem; text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  /* TOPICS */
+  #topics { background: var(--bg); }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .topic-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.8rem; position: relative; overflow: hidden; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  #topics .topic-card { cursor: pointer; }
+  .topic-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 0 24px rgba(0,229,160,0.1); }
+  #topics .topic-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .topic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .topic-num { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  .topic-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.7rem; }
+  .topic-desc { font-size: 0.88rem; color: var(--muted); }
+  .topic-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+  /* TOPIC DETAIL POPUP */
+  .topic-modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    display: grid; place-items: center; padding: 1.5rem;
+    background: rgba(2,6,14,0.18);
+    backdrop-filter: blur(0);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.22s ease, background 0.22s ease, backdrop-filter 0.22s ease;
+  }
+  .topic-modal-overlay.active {
+    opacity: 1; pointer-events: auto;
+    background: rgba(2,6,14,0.72);
+    backdrop-filter: blur(16px);
+  }
+  .topic-modal {
+    position: fixed; top: 50%; left: 50%;
+    width: min(620px, calc(100vw - 2rem));
+    max-height: min(76vh, 620px); overflow: auto;
+    background: linear-gradient(145deg, rgba(17,24,39,0.98), rgba(10,14,23,0.98));
+    border: 1px solid rgba(0,229,160,0.35);
+    border-radius: 18px;
+    box-shadow: 0 36px 90px rgba(0,0,0,0.55), 0 0 50px rgba(0,229,160,0.12);
+    padding: clamp(1.35rem, 4vw, 2.3rem);
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0;
+  }
+  .topic-modal-overlay.active .topic-modal {
+    animation: topicModalIn 0.58s cubic-bezier(0.18, 1.18, 0.28, 1) both;
+  }
+  .topic-modal-overlay.closing .topic-modal {
+    animation: topicModalOut 0.22s cubic-bezier(0.45, 0, 0.6, 1) both;
+  }
+  .topic-modal::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+    background-size: 200% 100%;
+    animation: borderFlow 2s ease infinite;
+  }
+  .topic-modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
+  .topic-modal-icon {
+    width: 58px; height: 58px; display: grid; place-items: center;
+    background: rgba(0,229,160,0.11); border: 1px solid rgba(0,229,160,0.24);
+    border-radius: 16px; font-size: 1.85rem; flex-shrink: 0;
+    box-shadow: inset 0 0 24px rgba(0,229,160,0.05);
+  }
+  .topic-modal-close {
+    width: 40px; height: 40px; border: 1px solid rgba(226,232,240,0.12);
+    border-radius: 50%; background: rgba(226,232,240,0.06); color: var(--text);
+    font-size: 1.35rem; line-height: 1; cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .topic-modal-close:hover { transform: scale(1.08); background: rgba(0,229,160,0.12); border-color: rgba(0,229,160,0.36); }
+  .topic-modal-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .topic-modal-num {
+    font-family: 'Space Mono', monospace; color: var(--accent);
+    font-size: 0.72rem; letter-spacing: 0.16em; margin-bottom: 0.65rem;
+    text-transform: uppercase;
+  }
+  .topic-modal-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800; line-height: 1.02; margin-bottom: 1rem;
+  }
+  .topic-modal-desc { color: #cbd5e1; font-size: 1rem; line-height: 1.8; margin-bottom: 1.35rem; }
+  .topic-modal-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .topic-modal-detail {
+    padding: 0.85rem; background: rgba(10,14,23,0.72);
+    border: 1px solid rgba(0,229,160,0.12); border-radius: 8px;
+  }
+  .topic-modal-detail span {
+    display: block; font-family: 'Space Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.25rem;
+  }
+  .topic-modal-detail strong { color: var(--accent); font-size: 0.86rem; font-weight: 700; }
+  body.topic-modal-open { overflow: hidden; }
+  @keyframes topicModalIn {
+    0% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--topic-origin-x, 0px)), calc(-50% + var(--topic-origin-y, 0px))) scale(0.18);
+      border-radius: 28px;
+      filter: blur(8px);
+    }
+    62% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.035);
+      filter: blur(0);
+    }
+    82% { transform: translate(-50%, -50%) scale(0.985); }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      border-radius: 18px;
+    }
+  }
+  @keyframes topicModalOut {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+    to { opacity: 0; transform: translate(-50%, -48%) scale(0.9); filter: blur(5px); }
+  }
+
+  /* LIQUID ANIMATION ON HOVER */
+  @keyframes liquidGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0,229,160,0.15), inset 0 0 20px rgba(0,229,160,0.03); }
+    50% { box-shadow: 0 0 40px rgba(0,229,160,0.3), inset 0 0 30px rgba(0,229,160,0.08); }
+  }
+  @keyframes borderFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .topic-card.liquid {
+    animation: liquidGlow 3s ease infinite;
+  }
+  .topic-card.liquid::before {
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent)) !important;
+    background-size: 200% 100%;
+    animation: borderFlow 2s ease infinite !important;
+  }
+
+  /* TELEGRAPH */
+  #telegraph { background: var(--surface2); }
+  .telegraph-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .telegraph-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; }
+  .telegraph-diagram svg { width: 100%; height: auto; }
+  .telegraph-explain h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent); }
+  .telegraph-explain p { color: var(--muted); margin-bottom: 1rem; font-size: 0.93rem; }
+  .signal-steps { list-style: none; counter-reset: steps; }
+  .signal-steps li {
+    counter-increment: steps; display: flex; gap: 1rem; margin-bottom: 1rem;
+    padding: 1rem; background: var(--surface); border-radius: 6px;
+    border-left: 3px solid var(--accent); font-size: 0.88rem; color: var(--muted);
+  }
+  .signal-steps li::before {
+    content: counter(steps); font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700;
+    color: var(--accent); background: rgba(0,229,160,0.1); border-radius: 4px;
+    padding: 2px 8px; flex-shrink: 0; align-self: flex-start; margin-top: 2px;
+  }
+
+  /* =============================================
+     VIDEO SECTION — NO-IFRAME CARD PLAYER
+     ============================================= */
+  #video { background: var(--bg); }
+
+  .video-player-container { max-width: 900px; margin: 0 auto; }
+
+  .video-card {
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 40px rgba(0,229,160,0.08);
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    background: #060b13;
+  }
+  .video-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 60px rgba(0,229,160,0.18);
+    transform: translateY(-3px);
+  }
+  .video-preview {
+    position: relative; width: 100%; padding-bottom: 44%;
+    overflow: hidden; background: #060b13;
+  }
+  .video-play-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.8rem; z-index: 2;
+  }
+  .video-play-btn {
+    width: 80px; height: 80px; background: var(--accent);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 50px rgba(0,229,160,0.5);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .video-card:hover .video-play-btn { transform: scale(1.12); background: #00c98a; }
+  .video-play-btn svg { margin-left: 6px; }
+  .video-play-label {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem; color: #fff;
+    letter-spacing: 0.1em; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+    padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15);
+  }
+  .video-info-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.4rem; background: var(--surface);
+    border-top: 1px solid var(--border); gap: 1rem;
+  }
+  .video-info-left { display: flex; align-items: center; gap: 0.8rem; }
+  .video-yt-icon { flex-shrink: 0; }
+  .video-title-text { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--text); }
+  .video-meta-text { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+  .video-watch-btn {
+    flex-shrink: 0; padding: 8px 18px; background: var(--accent); color: #0a0e17;
+    font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; border-radius: 4px; transition: background 0.2s;
+  }
+  .video-card:hover .video-watch-btn { background: #00c98a; }
+  .video-caption {
+    margin-top: 1rem; font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--muted); text-align: center; letter-spacing: 0.05em;
+  }
+
+  /* INSPIRATION */
+  #inspiration { background: var(--surface); }
+  .inspiration-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .inspiration-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.8rem; transition: all 0.25s; }
+  .inspiration-card:hover { border-color: var(--accent3); box-shadow: 0 0 20px rgba(245,158,11,0.08); transform: translateY(-3px); }
+  .insp-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .insp-title { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.5rem; }
+  .insp-text { color: var(--muted); font-size: 0.88rem; }
+
+  /* RESOURCES */
+  #resources { background: var(--bg); }
+  .resources-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .resource-group h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .link-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.8rem; text-decoration: none; color: inherit; transition: all 0.2s; }
+  .link-item:hover { border-color: var(--accent2); background: var(--surface2); transform: translateX(4px); }
+  .link-icon { width: 36px; height: 36px; background: rgba(14,165,233,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .link-meta { flex: 1; }
+  .link-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+  .link-desc { font-size: 0.78rem; color: var(--muted); }
+  .link-arrow { color: var(--accent2); align-self: center; font-size: 0.8rem; }
+  .link-badge { display: inline-block; font-family: 'Space Mono', monospace; font-size: 0.6rem; background: rgba(245,158,11,0.15); color: var(--accent3); border: 1px solid rgba(245,158,11,0.3); padding: 2px 6px; border-radius: 2px; margin-top: 3px; letter-spacing: 0.05em; }
+
+  /* FOOTER */
+  footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: var(--accent); }
+  .footer-info { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* NAV ASSIGNMENT BTN */
+  .nav-assignment-btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0a0e17; border: none; border-radius: 6px; font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-decoration: none;
+    cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,229,160,0.2);
+  }
+  .nav-assignment-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,229,160,0.35); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .data-flow { display: flex; align-items: center; gap: 0; margin: 2rem 0; font-family: 'Space Mono', monospace; font-size: 0.7rem; overflow: hidden; }
+  .flow-node { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; color: var(--accent); white-space: nowrap; }
+  .flow-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--accent), var(--accent2)); position: relative; min-width: 30px; }
+  .flow-dot { position: absolute; top: -3px; width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: flowDot 2s linear infinite; }
+  @keyframes flowDot { from { left: 0; } to { left: calc(100% - 7px); } }
+
+  /* TELEGRAPH INTERACTIVE */
+  .telegraph-interactive { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; }
+  .telegraph-interactive h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.8rem; color: var(--accent); }
+  .telegraph-input-group { margin-bottom: 1rem; }
+  .telegraph-input-group label { display: block; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.4rem; text-transform: uppercase; }
+  .telegraph-input-group input { width: 100%; padding: 8px 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 0.05em; transition: border-color 0.2s; }
+  .telegraph-input-group input:focus { outline: none; border-color: var(--accent); }
+  .telegraph-controls { display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .telegraph-btn { padding: 8px 16px; background: var(--accent); color: #0a0e17; border: none; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; transition: all 0.2s; }
+  .telegraph-btn:hover { background: #00c98a; transform: translateY(-2px); }
+  .telegraph-btn.secondary { background: transparent; border: 1px solid var(--accent2); color: var(--accent2); }
+  .telegraph-btn.secondary:hover { background: rgba(14,165,233,0.1); }
+  .telegraph-speed-control { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; font-size: 0.8rem; }
+  .telegraph-speed-control label { margin: 0; color: var(--muted); font-size: 0.7rem; }
+  .telegraph-speed-control input[type="range"] { width: 120px; cursor: pointer; }
+  .telegraph-speed-value { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); min-width: 35px; }
+  .morse-output { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.8rem; margin-bottom: 1rem; font-family: 'Space Mono', monospace; }
+  .morse-output-label { font-size: 0.6rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.4rem; text-transform: uppercase; }
+  .morse-code-display { font-size: 0.85rem; color: var(--accent); letter-spacing: 0.1em; line-height: 1.5; word-wrap: break-word; min-height: 28px; }
+  .morse-visual { display: flex; gap: 0.25rem; align-items: center; justify-content: center; margin-top: 0.6rem; flex-wrap: wrap; min-height: 24px; }
+  .morse-dot, .morse-dash { border-radius: 1px; transition: all 0.1s; }
+  .morse-dot { width: 6px; height: 6px; background: var(--accent); }
+  .morse-dash { width: 18px; height: 6px; background: var(--accent); }
+  .morse-separator { width: 2px; height: 6px; background: var(--muted); opacity: 0.3; }
+  .morse-word-separator { width: 1px; height: 10px; background: var(--accent2); opacity: 0.5; }
+  .telegraph-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.8rem; margin-bottom: 0.8rem; }
+  .stat-item { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0.7rem; text-align: center; }
+  .stat-item .value { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--accent); margin-bottom: 2px; }
+  .stat-item .label { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.05em; }
+  .telegraph-status { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); padding: 0.6rem; background: rgba(0,229,160,0.05); border-left: 2px solid var(--accent); border-radius: 4px; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    section { padding: 4rem 2rem; }
+    #hero { padding: 100px 2rem 3rem; }
+    .about-grid, .telegraph-container, .resources-grid { grid-template-columns: 1fr; }
+    .topic-modal { max-height: 82vh; border-radius: 16px; }
+    .topic-modal-detail-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <a class="nav-brand" href="#hero">DATA_COMM //</a>
+    <a class="nav-assignment-btn" href="https://docs.google.com/document/d/1j49mZy8js7FfNXiFG54MH6p7lox1fEji/edit?usp=sharing&ouid=110065795476880262166&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">📄 ASSIGNMENT</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#topics">Topics</a></li>
+    <li><a href="#satellites">Satellites</a></li>
+    <li><a href="#telegraph">Telegraph</a></li>
+    <li><a href="#video">Video</a></li>
+    <li><a href="#inspiration">Inspiration</a></li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">DATA COMMUNICATIONS PORTFOLIO</div>
+  <h1 class="hero-title">Connecting the World<br/><span>One Signal at a Time</span></h1>
+  <p class="hero-subtitle">A comprehensive journey through the principles, protocols, and technologies that make modern data communication possible — from the telegraph to TCP/IP.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#topics">Explore Topics</a>
+    <a class="btn btn-outline" href="#about">About Me</a>
+  </div>
+  <div class="data-flow" style="margin-top: 4rem;">
+    <div class="flow-node">SENDER</div>
+    <div class="flow-line"><div class="flow-dot"></div></div>
+    <div class="flow-node">ENCODER</div>
+    <div class="flow-line"><div class="flow-dot" style="animation-delay:0.5s"></div></div>
+    <div class="flow-node">CHANNEL</div>
+    <div class="flow-line"><div class="flow-dot" style="animation-delay:1s"></div></div>
+    <div class="flow-node">DECODER</div>
+    <div class="flow-line"><div class="flow-dot" style="animation-delay:1.5s"></div></div>
+    <div class="flow-node">RECEIVER</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>OSI MODEL</span><span>✦</span><span>TCP/IP</span><span>✦</span><span>MODULATION</span><span>✦</span><span>PROTOCOLS</span><span>✦</span><span>BANDWIDTH</span><span>✦</span><span>MULTIPLEXING</span><span>✦</span><span>ERROR DETECTION</span><span>✦</span><span>FIBER OPTICS</span><span>✦</span><span>WIRELESS</span><span>✦</span><span>ENCRYPTION</span><span>✦</span>
+    <span>OSI MODEL</span><span>✦</span><span>TCP/IP</span><span>✦</span><span>MODULATION</span><span>✦</span><span>PROTOCOLS</span><span>✦</span><span>BANDWIDTH</span><span>✦</span><span>MULTIPLEXING</span><span>✦</span><span>ERROR DETECTION</span><span>✦</span><span>FIBER OPTICS</span><span>✦</span><span>WIRELESS</span><span>✦</span><span>ENCRYPTION</span><span>✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">§ 01 — ABOUT ME</div>
+    <h2 class="section-title">The Person <span>Behind the Port</span></h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="profile-card">
+      <div class="profile-avatar">
+        <img class="avatar-svg" src="e405f366-6467-478b-8b44-997e91f79104.png" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;" />
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">Mr Stephen Obodai</div>
+        <div class="profile-id">ID: PUIT/24210092</div>
+      </div>
+    </div>
+    <div class="about-text">
+      <h3>Hello, I'm a Data Communications Student</h3>
+      <p>i am a dedicated student of Pentecost University majoring in Information Technology. Data Communications has been one of the most illuminating courses in my academic journey, revealing the intricate mechanisms that underpin every digital interaction we make.</p>
+      <p>This portfolio represents my learning journey — from understanding how bits flow across copper wires to grasping the complexity of modern wireless protocols. I believe that understanding how information travels is fundamental to building the connected world of tomorrow.</p>
+      <p>My fascination with data communication grew when I realised that every email, video call, and web page relies on decades of engineering innovation — innovations I am now privileged to study and build upon.</p>
+      <div class="about-stats">
+        <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">OSI Layers Mastered</div></div>
+        <div class="stat-box"><div class="stat-num">12+</div><div class="stat-label">Protocols Studied</div></div>
+        <div class="stat-box"><div class="stat-num">1</div><div class="stat-label">Semester of Depth</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPICS -->
+<section id="topics">
+  <div class="reveal">
+    <div class="section-label">§ 02 — WHAT I LEARNED</div>
+    <h2 class="section-title">Core Topics in <span>Data Communications</span></h2>
+    <p class="section-desc">A structured overview of the key concepts, models, and technologies covered throughout the course.</p>
+  </div>
+  <div class="topics-grid">
+    <div class="topic-card reveal"><div class="topic-icon">📡</div><div class="topic-num">TOPIC — 01</div><div class="topic-title">The OSI Model</div><div class="topic-desc">The 7-layer Open Systems Interconnection model provides a conceptual framework for how data travels from one device to another — Physical, Data Link, Network, Transport, Session, Presentation, and Application layers each play a distinct role.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🔗</div><div class="topic-num">TOPIC — 02</div><div class="topic-title">TCP/IP Protocol Suite</div><div class="topic-desc">The backbone of the internet. I learned how Transmission Control Protocol ensures reliable, ordered delivery of data packets, while IP handles addressing and routing across interconnected networks worldwide.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">〰️</div><div class="topic-num">TOPIC — 03</div><div class="topic-title">Signals & Modulation</div><div class="topic-desc">Understanding analog vs digital signals, and how modulation techniques (AM, FM, PM, QAM) encode digital data onto carrier waves for transmission across various media — the bridge between physical reality and binary data.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🛡️</div><div class="topic-num">TOPIC — 04</div><div class="topic-title">Error Detection & Correction</div><div class="topic-desc">Data rarely travels perfectly. I studied parity bits, checksums, CRC (Cyclic Redundancy Check), and Hamming codes — techniques that detect and correct errors introduced during transmission over noisy channels.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🔀</div><div class="topic-num">TOPIC — 05</div><div class="topic-title">Multiplexing Techniques</div><div class="topic-desc">TDM (Time-Division), FDM (Frequency-Division), and WDM (Wavelength-Division) multiplexing allow multiple signals to share a single channel simultaneously — crucial for maximising bandwidth efficiency in modern networks.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">📶</div><div class="topic-num">TOPIC — 06</div><div class="topic-title">Wireless Communication</div><div class="topic-desc">From Wi-Fi to cellular networks, I explored radio frequency propagation, CSMA/CA protocols, IEEE 802.11 standards, and the evolution from 1G to 5G — understanding the engineering behind cutting-edge wireless systems.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🔐</div><div class="topic-num">TOPIC — 07</div><div class="topic-title">Data Security & Encryption</div><div class="topic-desc">Securing data in transit through symmetric (AES, DES) and asymmetric (RSA) encryption, TLS/SSL handshakes, and public key infrastructure — essential knowledge for building trustworthy communication systems.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🌐</div><div class="topic-num">TOPIC — 08</div><div class="topic-title">Network Topologies & Media</div><div class="topic-desc">Physical and logical topologies (bus, ring, star, mesh), transmission media (twisted pair, coaxial, fiber optic, wireless), and the trade-offs between cost, speed, reliability, and distance in network design.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🛰️</div><div class="topic-num">TOPIC — 09</div><div class="topic-title">Satellite Systems</div><div class="topic-desc">Artificial satellites orbiting Earth enable global communication, navigation (GPS), weather forecasting, and earth observation. Understanding orbital mechanics, satellite subsystems, and space-based networks reveals how modern connectivity spans the planet.</div></div>
+  </div>
+</section>
+
+<!-- SATELLITES SECTION -->
+<section id="satellites" style="margin-top: 5rem;">
+  <div class="reveal">
+    <div class="section-label">§ 02b — SATELLITE COMMUNICATIONS</div>
+    <h2 class="section-title">Satellites: Connecting the <span>Global Network</span></h2>
+    <p class="section-desc">From geostationary TV broadcast to mega-constellations delivering broadband—satellite systems are a critical layer of modern data communications infrastructure.</p>
+  </div>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+    <div class="topic-card reveal"><div class="topic-icon">📡</div><div class="topic-num">ORBIT TYPE 01</div><div class="topic-title">Low Earth Orbit (LEO)</div><div class="topic-desc">200–2,000 km altitude. Satellites orbit every 90–120 minutes with low signal latency (20–40 ms). Used for imaging, Starlink internet, and spy satellites. Fast but requires constellation of satellites for continuous coverage.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🌍</div><div class="topic-num">ORBIT TYPE 02</div><div class="topic-title">Geostationary Orbit (GEO)</div><div class="topic-desc">35,786 km altitude. Orbits in 24 hours — appears fixed in the sky from Earth. Perfect for TV broadcast and weather monitoring, but higher latency (600 ms) and fewer satellites needed. The backbone of global television.</div></div>
+    <div class="topic-card reveal"><div class="topic-icon">🗺️</div><div class="topic-num">ORBIT TYPE 03</div><div class="topic-title">Medium Earth Orbit (MEO)</div><div class="topic-desc">2,000–35,786 km altitude. Home to GPS, GLONASS, and Galileo navigation systems. Orbits every 2–24 hours with moderate latency (77–160 ms). The sweet spot for global navigation coverage with manageable constellation size.</div></div>
+  </div>
+
+  <div class="prose reveal" style="max-width: 100%; margin-bottom: 2rem;">
+    <strong>Why Satellites Matter in Data Communications:</strong><br/>
+    Satellite systems carry roughly 80% of global data traffic. They enable long-distance communication by relaying signals between ground stations that would otherwise be too far apart. Unlike terrestrial networks, satellites can instantly provide coverage to remote areas—a critical advantage for emergency response, maritime operations, and connecting developing nations to the global internet.
+  </div>
+
+  <div class="card-grid">
+    <div class="card reveal">
+      <div class="card-icon">⚡</div>
+      <div class="card-label">Key Challenge</div>
+      <div class="card-title">Signal Latency</div>
+      <div class="card-body">GEO satellites introduce ~600ms delay (signal travels 36,000 km up and down). For real-time applications like video calls, this is noticeable. LEO constellations solve this with lower altitude but require more satellites and handoff complexity.</div>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🗑️</div>
+      <div class="card-label">Growing Problem</div>
+      <div class="card-title">Space Debris</div>
+      <div class="card-body">Over 27,000 trackable objects orbit Earth. At 7.9 km/s, even 1 cm fragments carry grenade-level kinetic energy. The Kessler Syndrome warns that collisions could cascade into unusability of key orbits—a critical infrastructure risk.</div>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">🌐</div>
+      <div class="card-label">Revolution</div>
+      <div class="card-title">Mega-Constellations</div>
+      <div class="card-body">SpaceX Starlink (6,000+ satellites), Amazon Kuiper, and OneWeb are deploying thousands of LEO satellites to deliver global broadband. This represents the largest infrastructure buildout since the internet itself—reshaping global connectivity in real-time.</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-align: center;" class="reveal">
+    <p style="color: var(--muted); margin-bottom: 1rem;">Want to dive deep into satellite technology?</p>
+    <a href="satellite-notes.html" class="btn btn-primary" style="display: inline-flex;">📚 Read Full Study Notes</a>
+  </div>
+</section>
+
+<!-- TELEGRAPH -->
+<section id="telegraph" style="margin-top: 5rem;">
+  <div class="reveal">
+    <div class="section-label">§ 03 — HISTORICAL CONTEXT</div>
+    <h2 class="section-title">The Telegraph: <span>Where It All Began</span></h2>
+    <p class="section-desc">The electric telegraph was the world's first practical data communication system — a revolutionary technology that compressed distance and time.</p>
+  </div>
+  <div class="telegraph-container">
+    <div class="telegraph-explain reveal">
+      <h3>My Understanding of the Telegraph</h3>
+      <p>The electric telegraph, invented by Samuel Morse and Alfred Vail in the 1830s–40s, was the world's first practical electrical communication system. It is, in essence, the great-great-grandparent of every digital communication system we use today.</p>
+      <p>What struck me most is how elegantly simple it is: a battery, a wire, and an electromagnet. The sender presses a key to complete or break an electrical circuit, sending pulses of current down the wire. The receiver's electromagnet clicks in response — long or short. These clicks are Morse code.</p>
+      <p>The fundamental principles it introduced that still govern data comm:</p>
+      <ul class="signal-steps">
+        <li>The concept of a <strong style="color:#e2e8f0">channel</strong> — a dedicated medium for signal transmission between two points, which maps directly to our modern understanding of communication channels.</li>
+        <li><strong style="color:#e2e8f0">Encoding</strong> — converting a message (letters, words) into a transmittable signal format (dots and dashes / electrical pulses). This is exactly what modems and codecs do today.</li>
+        <li><strong style="color:#e2e8f0">Binary signalling</strong> — the telegraph only had two states: circuit open or closed, current or no current. This is the direct precursor to binary 0s and 1s in digital communication.</li>
+        <li><strong style="color:#e2e8f0">Ground return</strong> — using the Earth as the return path for current. This early insight about circuits is foundational to understanding electrical signal paths.</li>
+        <li><strong style="color:#e2e8f0">Long-distance relay stations</strong> — signals weaken over distance (attenuation). Telegraph operators repeated signals at intervals — exactly what modern network repeaters and amplifiers do.</li>
+      </ul>
+    </div>
+    <div class="telegraph-diagram reveal">
+      <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" font-family="monospace">
+        <rect width="520" height="380" fill="#111827" rx="8"/>
+        <text x="260" y="28" text-anchor="middle" fill="#00e5a0" font-size="11" letter-spacing="3" font-weight="bold">TELEGRAPH SYSTEM DIAGRAM</text>
+        <line x1="40" y1="36" x2="480" y2="36" stroke="#00e5a0" stroke-width="0.5" opacity="0.4"/>
+        <rect x="30" y="55" width="130" height="90" rx="6" fill="#1a2235" stroke="#00e5a0" stroke-width="1"/>
+        <text x="95" y="74" text-anchor="middle" fill="#00e5a0" font-size="9" letter-spacing="2">SENDER STATION</text>
+        <rect x="42" y="82" width="28" height="16" rx="3" fill="#1f2937" stroke="#64748b" stroke-width="1"/>
+        <rect x="46" y="79" width="8" height="4" rx="1" fill="#64748b"/>
+        <rect x="58" y="79" width="8" height="4" rx="1" fill="#64748b"/>
+        <text x="56" y="93" text-anchor="middle" fill="#94a3b8" font-size="7">BATTERY</text>
+        <rect x="82" y="85" width="34" height="12" rx="3" fill="#374151" stroke="#94a3b8" stroke-width="1"/>
+        <circle cx="99" cy="91" r="3" fill="#00e5a0"/>
+        <text x="99" y="109" text-anchor="middle" fill="#94a3b8" font-size="7">TEL. KEY</text>
+        <circle cx="127" cy="91" r="6" fill="#d4a574"/>
+        <text x="127" y="111" text-anchor="middle" fill="#64748b" font-size="7">OPERATOR</text>
+        <text x="95" y="130" text-anchor="middle" fill="#f59e0b" font-size="10" letter-spacing="2">· — · ·</text>
+        <text x="95" y="143" text-anchor="middle" fill="#64748b" font-size="7">MORSE CODE</text>
+        <line x1="165" y1="100" x2="165" y2="180" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+        <line x1="165" y1="100" x2="145" y2="106" stroke="#92400e" stroke-width="2"/>
+        <line x1="165" y1="100" x2="185" y2="106" stroke="#92400e" stroke-width="2"/>
+        <ellipse cx="148" cy="107" rx="4" ry="4" fill="#6366f1"/>
+        <ellipse cx="182" cy="107" rx="4" ry="4" fill="#6366f1"/>
+        <line x1="260" y1="95" x2="260" y2="180" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+        <line x1="260" y1="95" x2="240" y2="101" stroke="#92400e" stroke-width="2"/>
+        <line x1="260" y1="95" x2="280" y2="101" stroke="#92400e" stroke-width="2"/>
+        <ellipse cx="243" cy="102" rx="4" ry="4" fill="#6366f1"/>
+        <ellipse cx="277" cy="102" rx="4" ry="4" fill="#6366f1"/>
+        <line x1="355" y1="100" x2="355" y2="180" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+        <line x1="355" y1="100" x2="335" y2="106" stroke="#92400e" stroke-width="2"/>
+        <line x1="355" y1="100" x2="375" y2="106" stroke="#92400e" stroke-width="2"/>
+        <ellipse cx="338" cy="107" rx="4" ry="4" fill="#6366f1"/>
+        <ellipse cx="372" cy="107" rx="4" ry="4" fill="#6366f1"/>
+        <path d="M148 107 Q200 98 243 102" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+        <path d="M182 107 Q220 103 240 102" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+        <path d="M277 102 Q310 97 338 107" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+        <path d="M277 102 Q315 104 337 107" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+        <text x="260" y="75" text-anchor="middle" fill="#fbbf24" font-size="8" letter-spacing="1">⚡ ELECTRICAL SIGNAL ⚡</text>
+        <text x="260" y="86" text-anchor="middle" fill="#64748b" font-size="7">COPPER WIRE / GROUND RETURN</text>
+        <rect x="360" y="55" width="130" height="90" rx="6" fill="#1a2235" stroke="#0ea5e9" stroke-width="1"/>
+        <text x="425" y="74" text-anchor="middle" fill="#0ea5e9" font-size="9" letter-spacing="2">RECEIVER STATION</text>
+        <rect x="370" y="82" width="40" height="20" rx="3" fill="#1f2937" stroke="#64748b" stroke-width="1"/>
+        <circle cx="390" cy="92" r="5" fill="#1f2937" stroke="#0ea5e9" stroke-width="1.5"/>
+        <text x="390" y="113" text-anchor="middle" fill="#94a3b8" font-size="7">SOUNDER</text>
+        <rect x="418" y="80" width="30" height="24" rx="3" fill="#374151" stroke="#64748b" stroke-width="1"/>
+        <line x1="422" y1="88" x2="444" y2="88" stroke="#00e5a0" stroke-width="0.8"/>
+        <line x1="422" y1="92" x2="440" y2="92" stroke="#00e5a0" stroke-width="0.8"/>
+        <line x1="422" y1="96" x2="442" y2="96" stroke="#00e5a0" stroke-width="0.8"/>
+        <text x="433" y="116" text-anchor="middle" fill="#94a3b8" font-size="7">RECORDER</text>
+        <circle cx="460" cy="91" r="6" fill="#d4a574"/>
+        <text x="460" y="111" text-anchor="middle" fill="#64748b" font-size="7">OPERATOR</text>
+        <text x="425" y="130" text-anchor="middle" fill="#0ea5e9" font-size="10" letter-spacing="2">· — · ·</text>
+        <text x="425" y="143" text-anchor="middle" fill="#64748b" font-size="7">DECODED MSG</text>
+        <line x1="30" y1="180" x2="490" y2="180" stroke="#64748b" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="260" y="194" text-anchor="middle" fill="#475569" font-size="8" letter-spacing="2">EARTH GROUND RETURN PATH</text>
+        <line x1="95" y1="145" x2="95" y2="180" stroke="#475569" stroke-width="1"/>
+        <line x1="425" y1="145" x2="425" y2="180" stroke="#475569" stroke-width="1"/>
+        <line x1="40" y1="210" x2="480" y2="210" stroke="#00e5a0" stroke-width="0.5" opacity="0.3"/>
+        <text x="260" y="228" text-anchor="middle" fill="#00e5a0" font-size="9" letter-spacing="2">HOW THE SIGNAL FLOWS</text>
+        <rect x="30" y="238" width="70" height="32" rx="4" fill="#1a2235" stroke="#00e5a0" stroke-width="0.8"/>
+        <text x="65" y="251" text-anchor="middle" fill="#e2e8f0" font-size="7.5">OPERATOR</text>
+        <text x="65" y="263" text-anchor="middle" fill="#94a3b8" font-size="7">presses key</text>
+        <text x="110" y="258" text-anchor="middle" fill="#00e5a0" font-size="10">→</text>
+        <rect x="120" y="238" width="70" height="32" rx="4" fill="#1a2235" stroke="#00e5a0" stroke-width="0.8"/>
+        <text x="155" y="251" text-anchor="middle" fill="#e2e8f0" font-size="7.5">BATTERY</text>
+        <text x="155" y="263" text-anchor="middle" fill="#94a3b8" font-size="7">sends current</text>
+        <text x="200" y="258" text-anchor="middle" fill="#00e5a0" font-size="10">→</text>
+        <rect x="210" y="238" width="70" height="32" rx="4" fill="#1a2235" stroke="#fbbf24" stroke-width="0.8"/>
+        <text x="245" y="251" text-anchor="middle" fill="#e2e8f0" font-size="7.5">WIRE</text>
+        <text x="245" y="263" text-anchor="middle" fill="#94a3b8" font-size="7">carries pulse</text>
+        <text x="290" y="258" text-anchor="middle" fill="#00e5a0" font-size="10">→</text>
+        <rect x="300" y="238" width="70" height="32" rx="4" fill="#1a2235" stroke="#0ea5e9" stroke-width="0.8"/>
+        <text x="335" y="251" text-anchor="middle" fill="#e2e8f0" font-size="7.5">SOUNDER</text>
+        <text x="335" y="263" text-anchor="middle" fill="#94a3b8" font-size="7">clicks/clacks</text>
+        <text x="380" y="258" text-anchor="middle" fill="#00e5a0" font-size="10">→</text>
+        <rect x="390" y="238" width="100" height="32" rx="4" fill="#1a2235" stroke="#0ea5e9" stroke-width="0.8"/>
+        <text x="440" y="251" text-anchor="middle" fill="#e2e8f0" font-size="7.5">MESSAGE DECODED</text>
+        <text x="440" y="263" text-anchor="middle" fill="#94a3b8" font-size="7">by trained operator</text>
+        <rect x="30" y="285" width="460" height="82" rx="6" fill="#0f172a" stroke="#334155" stroke-width="0.8"/>
+        <text x="260" y="302" text-anchor="middle" fill="#64748b" font-size="8" letter-spacing="2">MORSE CODE LEGEND</text>
+        <text x="60" y="320" fill="#f59e0b" font-size="11">·</text>
+        <text x="72" y="320" fill="#94a3b8" font-size="8">= DIT (short)</text>
+        <text x="60" y="338" fill="#f59e0b" font-size="11">—</text>
+        <text x="72" y="338" fill="#94a3b8" font-size="8">= DAH (long, 3×)</text>
+        <text x="200" y="320" fill="#0ea5e9" font-size="8">SOS: · · · — — — · · ·</text>
+        <text x="200" y="338" fill="#0ea5e9" font-size="8">HI:  · · · · · ·</text>
+        <text x="370" y="320" fill="#00e5a0" font-size="8">Speed: ~25 WPM</text>
+        <text x="370" y="338" fill="#64748b" font-size="8">max trained</text>
+        <text x="260" y="358" text-anchor="middle" fill="#334155" font-size="7">First commercial use: 1844 — Baltimore to Washington D.C.</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE TELEGRAPH -->
+  <div class="telegraph-interactive reveal">
+    <h3>⚡ Try It Yourself: Send a Message in Morse Code</h3>
+    <div class="telegraph-input-group">
+      <label for="telegraphInput">Enter your message</label>
+      <input id="telegraphInput" type="text" placeholder="Type a message... (A-Z, 0-9, spaces)" maxlength="100"/>
+    </div>
+    <div class="telegraph-controls">
+      <button class="telegraph-btn" onclick="encodeMorse()">🔤 Encode to Morse</button>
+      <button class="telegraph-btn secondary" onclick="playMorse()">🔊 Play Audio</button>
+      <button class="telegraph-btn secondary" onclick="clearTelegraph()">✕ Clear</button>
+    </div>
+    <div class="telegraph-speed-control">
+      <label for="morseSpeed">Speed (WPM):</label>
+      <input id="morseSpeed" type="range" min="5" max="40" value="15" onchange="updateSpeedDisplay()"/>
+      <div class="telegraph-speed-value" id="speedDisplay">15 WPM</div>
+    </div>
+    <div class="morse-output">
+      <div class="morse-output-label">Morse Code</div>
+      <div class="morse-code-display" id="morseCodeDisplay">— — — &nbsp; · · · &nbsp; · —</div>
+      <div class="morse-visual" id="morseVisual"></div>
+    </div>
+    <div class="telegraph-stats">
+      <div class="stat-item"><div class="value" id="charCount">0</div><div class="label">Characters</div></div>
+      <div class="stat-item"><div class="value" id="wordCount">0</div><div class="label">Words</div></div>
+      <div class="stat-item"><div class="value" id="durationDisplay">0.0s</div><div class="label">Duration</div></div>
+      <div class="stat-item"><div class="value" id="symbolCount">0</div><div class="label">Symbols</div></div>
+    </div>
+    <div class="telegraph-status" id="telegraphStatus">→ Ready to encode messages. Enter text above and click "Encode to Morse".</div>
+  </div>
+</section>
+
+<!-- =============================================
+     VIDEO SECTION — NO IFRAME, WORKS ANYWHERE
+     ============================================= -->
+<section id="video">
+  <div class="reveal">
+    <div class="section-label">§ 04 — LEARNING RESOURCE</div>
+    <h2 class="section-title">Data Comm in <span>Motion</span></h2>
+    <p class="section-desc">This video provides an excellent visual explanation of how data travels across networks — core concepts from the course brought to life.</p>
+  </div>
+
+  <div class="video-player-container reveal">
+
+    <!-- Video card — click opens YouTube in same tab -->
+    <div class="video-card" onclick="window.open('https://www.youtube.com/watch?v=3QhU9jd03a0','_self')" role="button" tabindex="0" aria-label="Watch Data Communications video on YouTube" onkeydown="if(event.key==='Enter')window.open('https://www.youtube.com/watch?v=3QhU9jd03a0','_self')">
+
+      <!-- Simulated video preview with animated signal graphic -->
+      <div class="video-preview">
+        <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:absolute;inset:0;">
+          <!-- Dark background -->
+          <rect width="900" height="400" fill="#060b13"/>
+          <!-- Grid -->
+          <defs>
+            <pattern id="vgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,229,160,0.05)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="900" height="400" fill="url(#vgrid)"/>
+
+          <!-- Animated signal wave left channel -->
+          <polyline points="0,200 60,160 120,200 180,240 240,200 300,140 360,200 420,260 480,200 540,150 600,200 660,250 720,200 780,170 840,200 900,200"
+            fill="none" stroke="#00e5a0" stroke-width="2.5" opacity="0.6" stroke-linecap="round" stroke-linejoin="round">
+            <animate attributeName="points" dur="3s" repeatCount="indefinite"
+              values="
+                0,200 60,160 120,200 180,240 240,200 300,140 360,200 420,260 480,200 540,150 600,200 660,250 720,200 780,170 840,200 900,200;
+                0,200 60,240 120,200 180,160 240,200 300,260 360,200 420,140 480,200 540,250 600,200 660,150 720,200 780,230 840,200 900,200;
+                0,200 60,160 120,200 180,240 240,200 300,140 360,200 420,260 480,200 540,150 600,200 660,250 720,200 780,170 840,200 900,200"
+            />
+          </polyline>
+          <!-- Second wave -->
+          <polyline points="0,200 50,180 100,200 150,220 200,200 250,175 300,200 350,225 400,200 450,178 500,200 550,222 600,200 650,180 700,200 750,215 800,200 850,188 900,200"
+            fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity="0.4" stroke-linecap="round">
+            <animate attributeName="points" dur="2s" repeatCount="indefinite"
+              values="
+                0,200 50,180 100,200 150,220 200,200 250,175 300,200 350,225 400,200 450,178 500,200 550,222 600,200 650,180 700,200 750,215 800,200 850,188 900,200;
+                0,200 50,220 100,200 150,180 200,200 250,225 300,200 350,175 400,200 450,222 500,200 550,178 600,200 650,220 700,200 750,185 800,200 850,212 900,200;
+                0,200 50,180 100,200 150,220 200,200 250,175 300,200 350,225 400,200 450,178 500,200 550,222 600,200 650,180 700,200 750,215 800,200 850,188 900,200"
+            />
+          </polyline>
+
+          <!-- Glowing center dot -->
+          <circle cx="450" cy="200" r="6" fill="#00e5a0" opacity="0.9">
+            <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="450" cy="200" r="20" fill="none" stroke="#00e5a0" stroke-width="1" opacity="0.3">
+            <animate attributeName="r" values="20;40;20" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- Labels -->
+          <text x="450" y="60" text-anchor="middle" fill="#00e5a0" font-family="monospace" font-size="11" letter-spacing="4" opacity="0.5">DATA COMMUNICATIONS</text>
+          <text x="450" y="80" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="9" letter-spacing="2">NETWORKING FUNDAMENTALS</text>
+
+          <!-- Corner decorations -->
+          <rect x="20" y="20" width="30" height="2" fill="#00e5a0" opacity="0.4"/>
+          <rect x="20" y="20" width="2" height="30" fill="#00e5a0" opacity="0.4"/>
+          <rect x="850" y="20" width="30" height="2" fill="#00e5a0" opacity="0.4"/>
+          <rect x="878" y="20" width="2" height="30" fill="#00e5a0" opacity="0.4"/>
+          <rect x="20" y="378" width="30" height="2" fill="#00e5a0" opacity="0.4"/>
+          <rect x="20" y="350" width="2" height="30" fill="#00e5a0" opacity="0.4"/>
+          <rect x="850" y="378" width="30" height="2" fill="#00e5a0" opacity="0.4"/>
+          <rect x="878" y="350" width="2" height="30" fill="#00e5a0" opacity="0.4"/>
+
+          <!-- Bottom data strip -->
+          <rect x="0" y="360" width="900" height="40" fill="rgba(0,0,0,0.5)"/>
+          <text x="30" y="384" fill="#00e5a0" font-family="monospace" font-size="9" letter-spacing="2" opacity="0.7">youtube.com/watch?v=3QhU9jd03a0</text>
+          <text x="870" y="384" text-anchor="end" fill="#64748b" font-family="monospace" font-size="9" opacity="0.5">CLICK TO WATCH ↗</text>
+        </svg>
+
+        <!-- Big play button -->
+        <div class="video-play-overlay">
+          <div class="video-play-btn">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#0a0e17"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <div class="video-play-label">Watch on YouTube</div>
+        </div>
+      </div>
+
+      <!-- Info bar below preview -->
+      <div class="video-info-bar">
+        <div class="video-info-left">
+          <div class="video-yt-icon">
+            <svg viewBox="0 0 24 24" fill="#ff0000" width="20" height="20"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8z"/><polygon points="9.6,15.6 15.8,12 9.6,8.4" fill="white"/></svg>
+          </div>
+          <div>
+            <div class="video-title-text">Data Communications &amp; Networking Fundamentals</div>
+            <div class="video-meta-text">YouTube · Click to open and watch in this tab</div>
+          </div>
+        </div>
+        <div class="video-watch-btn">▶ WATCH NOW</div>
+      </div>
+    </div>
+
+    <p class="video-caption">▶ DATA COMMUNICATIONS — Essential Concepts and Networking Fundamentals</p>
+  </div>
+</section>
+
+<!-- INSPIRATION -->
+<section id="inspiration">
+  <div class="reveal">
+    <div class="section-label">§ 05 — INSPIRATION</div>
+    <h2 class="section-title">What <span>Drives Me</span></h2>
+    <p class="section-desc">The forces that ignited my passion for data communications and keep me driven to learn more.</p>
+  </div>
+  <div class="inspiration-grid reveal">
+    <div class="inspiration-card"><div class="insp-icon">🌍</div><div class="insp-title">Global Connectivity</div><div class="insp-text">Growing up, I marvelled at how a message could cross continents in milliseconds. Understanding the engineering behind this "magic" drove me to study data communications at its core.</div></div>
+    <div class="inspiration-card"><div class="insp-icon">🏗️</div><div class="insp-title">Building the Future</div><div class="insp-text">The internet is still young. 5G, satellite internet, and quantum communication are redefining what's possible. I want to be part of the generation that builds the next layer of this infrastructure.</div></div>
+    <div class="inspiration-card"><div class="insp-icon">📚</div><div class="insp-title">The Elegance of Protocols</div><div class="insp-text">There is real beauty in how engineers designed TCP/IP — a set of simple rules that makes a chaotic global network function reliably. This elegant problem-solving inspires my own approach to engineering.</div></div>
+    <div class="inspiration-card"><div class="insp-icon">🔭</div><div class="insp-title">Historical Pioneers</div><div class="insp-text">Samuel Morse, Alexander Graham Bell, Nikola Tesla, Vint Cerf — these innovators transformed how humanity communicates. Their legacy reminds me that impactful ideas start with deep understanding.</div></div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="reveal">
+    <div class="section-label">§ 06 — RESOURCES &amp; LINKS</div>
+    <h2 class="section-title">References &amp; <span>Further Reading</span></h2>
+    <p class="section-desc">Curated links to course materials, my word assignment, and essential learning resources.</p>
+  </div>
+  <div class="resources-grid reveal">
+    <div class="resource-group">
+      <h3>📎 Course &amp; Assignment Links</h3>
+      <a class="link-item" href="https://docs.google.com/document/d/1j49mZy8js7FfNXiFG54MH6p7lox1fEji/edit?usp=sharing&ouid=110065795476880262166&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">
+        <div class="link-icon">📄</div>
+        <div class="link-meta"><div class="link-title">My Word Assignment</div><div class="link-desc">Data Communications written assignment — full analysis and research paper</div><div class="link-badge">DOWNLOAD .DOCX</div></div>
+        <div class="link-arrow">↗</div>
+      </a>
+      <a class="link-item" href="https://arcada.fi" target="_blank" rel="noopener noreferrer">
+        <div class="link-icon">🏫</div>
+        <div class="link-meta"><div class="link-title">Arcada University of Applied Sciences</div><div class="link-desc">My institution — home of my ICT studies in Helsinki, Finland</div></div>
+        <div class="link-arrow">↗</div>
+      </a>
+      <a class="link-item" href="https://www.forouzan.com" target="_blank" rel="noopener noreferrer">
+        <div class="link-icon">📘</div>
+        <div class="link-meta"><div class="link-title">Data Communications &amp; Networking — Forouzan</div><div class="link-desc">The primary textbook used in the course by Behrouz A. Forouzan</div><div class="link-badge">COURSE TEXTBOOK</div></div>
+        <div class="link-arrow">↗</div>
+      </a>
+    </div>
+    <div class="resource-group">
+      <h3>🔗 Learning Resources</h3>
+      <a class="link-item" href="https://www.cloudflare.com/learning/" target="_blank" rel="noopener noreferrer">
+        <div class="link-icon">☁️</div>
+        <div class="link-meta"><div class="link-title">Cloudflare Learning Center</div><div class="link-desc">In-depth guides on networking, protocols, DNS, CDN, and internet infrastructure</div></div>
+        <div class="link-arrow">↗</div>
+      </a>
+      <a class="link-item" href="https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html" target="_blank" rel="noopener noreferrer">
+        <div class="link-icon">🔌</div>
+        <div class="link-meta"><div class="link-title">Cisco Networking Basics</div><div class="link-desc">Foundational networking concepts from one of the world's leading network equipment manufacturers</div></div>
+        <div class="link-arrow">↗</div>
+      </a>
+      <a class="link-item" href="https://www.ietf.org/rfc/" target="_blank" rel="noopener noreferrer">
+        <div class="link-icon">📜</div>
+        <div class="link-meta"><div class="link-title">IETF RFC Repository</div><div class="link-desc">Original technical specifications for all major internet protocols — TCP, IP, HTTP, DNS and more</div><div class="link-badge">PRIMARY SOURCE</div></div>
+        <div class="link-arrow">↗</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">DATA_COMM //</div>
+    <div class="footer-info" style="margin-top: 4px;">Data Communications Portfolio · Arcada University</div>
+  </div>
+  <div class="footer-info" style="text-align:center;">Built with knowledge gained from<br/>one transformative semester</div>
+  <div class="footer-links">
+    <a href="#hero">TOP</a>
+    <a href="#about">ABOUT</a>
+    <a href="#topics">TOPICS</a>
+    <a href="#telegraph">TELEGRAPH</a>
+    <a href="#resources">RESOURCES</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // LIQUID ANIMATION ON TOPIC CARDS
+  const topicCards = document.querySelectorAll('.topic-card');
+  topicCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.classList.add('liquid');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.classList.remove('liquid');
+    });
+  });
+
+  // IPHONE-STYLE TOPIC POPUP FOR TOPICS 1-9
+  const coreTopicCards = document.querySelectorAll('#topics .topic-card');
+  const topicModalOverlay = document.createElement('div');
+  topicModalOverlay.className = 'topic-modal-overlay';
+  topicModalOverlay.setAttribute('aria-hidden', 'true');
+  topicModalOverlay.innerHTML = `
+    <article class="topic-modal" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
+      <div class="topic-modal-header">
+        <div class="topic-modal-icon" id="topicModalIcon"></div>
+        <button class="topic-modal-close" type="button" aria-label="Close topic details">&times;</button>
+      </div>
+      <div class="topic-modal-num" id="topicModalNum"></div>
+      <h3 class="topic-modal-title" id="topicModalTitle"></h3>
+      <p class="topic-modal-desc" id="topicModalDesc"></p>
+      <div class="topic-modal-detail-grid" aria-label="Topic quick facts">
+        <div class="topic-modal-detail"><span>Selection</span><strong id="topicModalSelection"></strong></div>
+        <div class="topic-modal-detail"><span>Course Area</span><strong>Data Comm</strong></div>
+        <div class="topic-modal-detail"><span>Focus</span><strong>Key concept</strong></div>
+      </div>
+    </article>
+  `;
+  document.body.appendChild(topicModalOverlay);
+
+  const topicModal = topicModalOverlay.querySelector('.topic-modal');
+  const topicModalClose = topicModalOverlay.querySelector('.topic-modal-close');
+  const topicModalIcon = document.getElementById('topicModalIcon');
+  const topicModalNum = document.getElementById('topicModalNum');
+  const topicModalTitle = document.getElementById('topicModalTitle');
+  const topicModalDesc = document.getElementById('topicModalDesc');
+  const topicModalSelection = document.getElementById('topicModalSelection');
+  let previousFocusedTopic = null;
+
+  function openTopicModal(card) {
+    const rect = card.getBoundingClientRect();
+    const originX = rect.left + rect.width / 2 - window.innerWidth / 2;
+    const originY = rect.top + rect.height / 2 - window.innerHeight / 2;
+
+    previousFocusedTopic = card;
+    topicModal.style.setProperty('--topic-origin-x', originX + 'px');
+    topicModal.style.setProperty('--topic-origin-y', originY + 'px');
+    topicModalIcon.textContent = card.querySelector('.topic-icon')?.textContent || '';
+    topicModalNum.textContent = card.querySelector('.topic-num')?.textContent || '';
+    topicModalTitle.textContent = card.querySelector('.topic-title')?.textContent || '';
+    topicModalDesc.textContent = card.querySelector('.topic-desc')?.textContent || '';
+    topicModalSelection.textContent = topicModalNum.textContent.replace('TOPIC', 'Topic');
+
+    topicModalOverlay.classList.remove('closing');
+    topicModalOverlay.classList.add('active');
+    topicModalOverlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('topic-modal-open');
+    topicModalClose.focus({ preventScroll: true });
+  }
+
+  function closeTopicModal() {
+    if (!topicModalOverlay.classList.contains('active')) return;
+    topicModalOverlay.classList.add('closing');
+    topicModalOverlay.classList.remove('active');
+    topicModalOverlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('topic-modal-open');
+    setTimeout(() => {
+      topicModalOverlay.classList.remove('closing');
+      previousFocusedTopic?.focus({ preventScroll: true });
+    }, 240);
+  }
+
+  coreTopicCards.forEach((card, index) => {
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Open details for topic ' + (index + 1));
+    card.addEventListener('click', () => openTopicModal(card));
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openTopicModal(card);
+      }
+    });
+  });
+
+  topicModalClose.addEventListener('click', closeTopicModal);
+  topicModalOverlay.addEventListener('click', (event) => {
+    if (event.target === topicModalOverlay) closeTopicModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeTopicModal();
+  });
+
+  // MORSE CODE ENCODER
+  const morseCode = {
+    'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.','.':'.-.-.-',',':'--..--','?':'..--..','!':'-.-.--','/':'-..-.','(':'-.--.',')':'-.--.-','&':'.-...','@':'.--.-.'
+  };
+
+  let currentMorse = '';
+  let audioContext = null;
+
+  function encodeMorse() {
+    const input = document.getElementById('telegraphInput').value.toUpperCase();
+    if (!input) { document.getElementById('telegraphStatus').innerText = '→ Please enter a message to encode.'; return; }
+    const morse = input.split(' ').map(word => word.split('').map(char => morseCode[char] || '?').join(' ')).join(' / ');
+    currentMorse = morse;
+    document.getElementById('morseCodeDisplay').innerText = morse;
+    visualizeMorse(morse);
+    updateStats(input, morse);
+    document.getElementById('telegraphStatus').innerText = '→ Message encoded! Click "Play Audio" to hear it in Morse code.';
+  }
+
+  function visualizeMorse(morse) {
+    const visual = document.getElementById('morseVisual');
+    visual.innerHTML = '';
+    morse.split('').forEach(sym => {
+      const el = document.createElement('div');
+      if (sym === '.') el.className = 'morse-dot';
+      else if (sym === '-') el.className = 'morse-dash';
+      else if (sym === ' ') el.className = 'morse-separator';
+      else if (sym === '/') el.className = 'morse-word-separator';
+      else return;
+      visual.appendChild(el);
+    });
+  }
+
+  function updateStats(input, morse) {
+    const words = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+    const symbols = morse.replace(/\s/g, '').length;
+    const wpm = parseInt(document.getElementById('morseSpeed').value);
+    const duration = (symbols / (wpm * 1.2)).toFixed(1);
+    document.getElementById('charCount').innerText = input.length;
+    document.getElementById('wordCount').innerText = words;
+    document.getElementById('symbolCount').innerText = symbols;
+    document.getElementById('durationDisplay').innerText = duration + 's';
+  }
+
+  function updateSpeedDisplay() {
+    document.getElementById('speedDisplay').innerText = document.getElementById('morseSpeed').value + ' WPM';
+  }
+
+  function playMorse() {
+    if (!currentMorse) { document.getElementById('telegraphStatus').innerText = '→ Please encode a message first.'; return; }
+    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    document.getElementById('telegraphStatus').innerText = '→ Playing Morse code... 🔊';
+    const wpm = parseInt(document.getElementById('morseSpeed').value);
+    const ditDuration = (1.2 / wpm) * 1000;
+    let position = 0;
+    const playNext = () => {
+      if (position >= currentMorse.length) { document.getElementById('telegraphStatus').innerText = '→ Morse code playback complete!'; return; }
+      const char = currentMorse[position];
+      let duration = 0;
+      if (char === '.') { playTone(audioContext, ditDuration); duration = ditDuration; }
+      else if (char === '-') { playTone(audioContext, ditDuration * 3); duration = ditDuration * 3; }
+      else if (char === ' ') { duration = ditDuration * 3; }
+      else if (char === '/') { duration = ditDuration * 7; }
+      duration += ditDuration;
+      position++;
+      setTimeout(playNext, duration);
+    };
+    playNext();
+  }
+
+  function playTone(ctx, duration) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 800; osc.type = 'sine';
+    const now = ctx.currentTime;
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + duration / 1000);
+    osc.start(now); osc.stop(now + duration / 1000);
+  }
+
+  function clearTelegraph() {
+    document.getElementById('telegraphInput').value = '';
+    document.getElementById('morseCodeDisplay').innerText = '— — — \u00a0 · · · \u00a0 · —';
+    document.getElementById('morseVisual').innerHTML = '';
+    document.getElementById('charCount').innerText = '0';
+    document.getElementById('wordCount').innerText = '0';
+    document.getElementById('symbolCount').innerText = '0';
+    document.getElementById('durationDisplay').innerText = '0.0s';
+    document.getElementById('telegraphStatus').innerText = '→ Ready to encode messages. Enter text above and click "Encode to Morse".';
+    currentMorse = '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Satellite Systems — Study Notes | Stephen Obodai</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  /* ─── DESIGN TOKENS (matches portfolio exactly) ─── */
+  :root {
+    --bg:       #0a0e17;
+    --surface:  #111827;
+    --surface2: #1a2235;
+    --accent:   #00e5a0;
+    --accent2:  #0ea5e9;
+    --accent3:  #f59e0b;
+    --text:     #e2e8f0;
+    --muted:    #64748b;
+    --border:   rgba(0,229,160,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ─── STAR FIELD BACKGROUND ─── */
+  .starfield {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+    opacity: var(--op, 0.4);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--op, 0.4); transform: scale(1); }
+    50%       { opacity: 0.1; transform: scale(0.5); }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,14,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem;
+    color: var(--muted); text-decoration: none; letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-badge {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem; font-weight: 700;
+    background: rgba(0,229,160,0.12); color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 3px;
+    padding: 4px 10px; letter-spacing: 0.08em;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 100px 2rem 4rem;
+    position: relative; z-index: 1;
+  }
+  .hero-orbit {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .orbit-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(0,229,160,0.08);
+  }
+  .orbit-ring:nth-child(1) { width: 300px; height: 300px; animation: spin 20s linear infinite; }
+  .orbit-ring:nth-child(2) { width: 500px; height: 500px; animation: spin 35s linear infinite reverse; }
+  .orbit-ring:nth-child(3) { width: 700px; height: 700px; animation: spin 55s linear infinite; }
+  .orbit-ring:nth-child(4) { width: 900px; height: 900px; animation: spin 80s linear infinite reverse; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* Satellite dot on rings */
+  .orbit-ring::after {
+    content: '';
+    position: absolute; top: -3px; left: 50%;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    transform: translateX(-50%);
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    color: var(--accent); border: 1px solid var(--accent);
+    padding: 5px 14px; border-radius: 2px; letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1rem; color: var(--muted); max-width: 520px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-meta {
+    display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .hero-meta-item {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    color: var(--muted); letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero-meta-item::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); display: block;
+  }
+
+  /* ─── SCROLL HINT ─── */
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    color: var(--muted); letter-spacing: 0.1em; animation: fadeUp 1s 0.8s ease both;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{opacity:0.4;height:40px} 50%{opacity:1;height:55px} }
+
+  /* ─── MAIN CONTENT ─── */
+  main { position: relative; z-index: 1; }
+
+  /* ─── SECTION WRAPPER ─── */
+  .section {
+    padding: 5rem 0;
+    max-width: 860px; margin: 0 auto;
+    padding-left: 2.5rem; padding-right: 2.5rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .section-label.vis { opacity: 1; transform: none; }
+
+  .section-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.1;
+    margin-bottom: 0.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s 0.05s, transform 0.5s 0.05s;
+  }
+  .section-title.vis { opacity: 1; transform: none; }
+  .section-title span { color: var(--accent); }
+
+  .section-intro {
+    color: var(--muted); font-size: 1rem; margin-bottom: 2.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s 0.1s, transform 0.5s 0.1s;
+  }
+  .section-intro.vis { opacity: 1; transform: none; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.15; margin: 0 2.5rem;
+  }
+
+  /* ─────────────────────────────────────────
+     APPLE-STYLE HIGHLIGHT ANIMATION
+     When text scrolls into view, a glowing
+     green sweep illuminates key phrases.
+  ───────────────────────────────────────── */
+  .hl {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--accent) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-position: 200% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    transition: background-position 0s;
+  }
+  /* Triggered class — smooth sweep left to right */
+  .hl.fired {
+    background-position: -200% 0;
+    transition: background-position 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* After sweep settles — stay accent coloured */
+  .hl.done {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--accent);
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+
+  /* ─── BIG STAT HIGHLIGHT (Apple numbers style) ─── */
+  .big-stat {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: transparent;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text;
+    line-height: 1; margin-bottom: 0.3rem;
+    opacity: 0; transform: scale(0.85);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .big-stat.vis { opacity: 1; transform: scale(1); }
+
+  /* ─── NOTE CARDS ─── */
+  .card-grid {
+    display: grid; gap: 1.2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    margin-bottom: 2rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.5s, transform 0.5s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .card.vis { opacity: 1; transform: none; }
+  .card:hover { border-color: var(--accent); box-shadow: 0 0 24px rgba(0,229,160,0.08); }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .card-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+  .card-label {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; margin-bottom: 0.5rem;
+  }
+  .card-body { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  /* ─── PROSE BLOCKS (paragraph notes) ─── */
+  .prose {
+    font-size: 1rem; color: var(--muted); line-height: 1.85;
+    margin-bottom: 1.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.55s, transform 0.55s;
+  }
+  .prose.vis { opacity: 1; transform: none; }
+
+  /* ─── ORBIT TABLE ─── */
+  .orbit-table {
+    width: 100%; border-collapse: collapse; margin: 2rem 0;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .orbit-table.vis { opacity: 1; transform: none; }
+  .orbit-table thead tr {
+    background: var(--surface2);
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.08em; color: var(--accent);
+    text-transform: uppercase;
+  }
+  .orbit-table th, .orbit-table td {
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--border);
+    text-align: left; font-size: 0.88rem;
+  }
+  .orbit-table td { color: var(--muted); }
+  .orbit-table tbody tr { background: var(--surface); transition: background 0.2s; }
+  .orbit-table tbody tr:hover { background: var(--surface2); }
+  .orbit-table td:first-child { color: var(--text); font-weight: 500; }
+  .orbit-badge {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    padding: 2px 7px; border-radius: 2px; letter-spacing: 0.05em; font-weight: 700;
+  }
+  .badge-leo { background: rgba(0,229,160,0.12); color: var(--accent); border: 1px solid rgba(0,229,160,0.3); }
+  .badge-meo { background: rgba(14,165,233,0.12); color: var(--accent2); border: 1px solid rgba(14,165,233,0.3); }
+  .badge-geo { background: rgba(245,158,11,0.12); color: var(--accent3); border: 1px solid rgba(245,158,11,0.3); }
+
+  /* ─── TIMELINE (history) ─── */
+  .timeline { position: relative; padding-left: 2rem; margin: 2rem 0; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, var(--accent), transparent);
+    opacity: 0.3;
+  }
+  .tl-item {
+    position: relative; margin-bottom: 2rem;
+    padding: 1.2rem 1.2rem 1.2rem 1.5rem;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .tl-item.vis { opacity: 1; transform: none; }
+  .tl-item::before {
+    content: ''; position: absolute; left: -2.5rem; top: 1.5rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 10px var(--accent);
+  }
+  .tl-year {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.3rem;
+  }
+  .tl-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; margin-bottom: 0.4rem;
+  }
+  .tl-body { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  /* ─── SUBSYSTEM PILLS ─── */
+  .subsystems {
+    display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.5rem 0;
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .subsystems.vis { opacity: 1; }
+  .pill {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 100px; padding: 6px 14px;
+    font-size: 0.82rem; color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .pill:hover { border-color: var(--accent); background: var(--surface2); }
+  .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  /* ─── HIGHLIGHT QUOTE (Apple-style large text reveal) ─── */
+  .quote-block {
+    padding: 3.5rem 0; text-align: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 3rem 0;
+    position: relative; overflow: hidden;
+  }
+  .quote-block::before {
+    content: '"';
+    position: absolute; top: -1rem; left: 1rem;
+    font-size: 10rem; font-family: 'Syne', sans-serif; font-weight: 800;
+    color: rgba(0,229,160,0.04); line-height: 1; pointer-events: none;
+  }
+  .quote-text {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    line-height: 1.4; max-width: 720px; margin: 0 auto;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .quote-text.vis { opacity: 1; transform: none; }
+
+  /* ─── STATS ROW ─── */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.2rem; margin: 2.5rem 0;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.4rem; text-align: center;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .stat-card.vis { opacity: 1; transform: none; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 2rem; color: var(--accent); line-height: 1;
+  }
+  .stat-unit {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    color: var(--muted); letter-spacing: 0.1em; margin-top: 4px;
+  }
+  .stat-desc { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+
+  /* ─── CHALLENGE ITEMS ─── */
+  .challenge-list { list-style: none; margin: 1.5rem 0; }
+  .challenge-list li {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 6px;
+    margin-bottom: 0.8rem; font-size: 0.9rem;
+    opacity: 0; transform: translateX(20px);
+    transition: opacity 0.45s, transform 0.45s;
+  }
+  .challenge-list li.vis { opacity: 1; transform: none; }
+  .ch-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+  .ch-text { color: var(--muted); }
+  .ch-title { font-weight: 600; color: var(--text); margin-bottom: 2px; font-size: 0.92rem; }
+
+  /* ─── FUTURE SECTION ─── */
+  .future-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin: 1.5rem 0;
+  }
+  .future-card {
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.4rem; text-align: center;
+    opacity: 0; transform: scale(0.92);
+    transition: opacity 0.5s, transform 0.5s, border-color 0.2s;
+  }
+  .future-card.vis { opacity: 1; transform: scale(1); }
+  .future-card:hover { border-color: var(--accent2); }
+  .future-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+  .future-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .future-desc { font-size: 0.8rem; color: var(--muted); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--surface); border-top: 1px solid var(--border);
+    padding: 2.5rem; text-align: center; position: relative; z-index: 1;
+  }
+  .footer-brand { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+  .footer-info { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+
+  @media(max-width:700px){
+    nav .nav-links { display: none; }
+    .section { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .divider { margin: 0 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STAR FIELD -->
+<div class="starfield" id="starfield"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">DATA_COMM //</a>
+  <ul class="nav-links">
+    <li><a href="#history">History</a></li>
+    <li><a href="#orbits">Orbits</a></li>
+    <li><a href="#subsystems">Subsystems</a></li>
+    <li><a href="#types">Types</a></li>
+    <li><a href="#challenges">Challenges</a></li>
+    <li><a href="#future">Future</a></li>
+  </ul>
+  <span class="nav-badge">PUIT/24210092</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orbit" aria-hidden="true">
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+  </div>
+  <div class="hero-tag">SATELLITE SYSTEMS — STUDY NOTES</div>
+  <h1 class="hero-title">Artificial Satellites<br/><span>From Orbit to Application</span></h1>
+  <p class="hero-sub">Concise reference notes covering orbits, subsystems, satellite types, challenges, and future trends — by Stephen Obodai.</p>
+  <div class="hero-meta">
+    <span class="hero-meta-item">Stephen Obodai</span>
+    <span class="hero-meta-item">PUIT/24210092</span>
+    <span class="hero-meta-item">Arcada University</span>
+    <span class="hero-meta-item">Data Communications</span>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<main>
+
+<!-- ══════════════════════════════
+     § 01 — WHAT IS A SATELLITE?
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="intro">
+  <div class="section-label">§ 01 — DEFINITION</div>
+  <h2 class="section-title">What Is an <span>Artificial Satellite?</span></h2>
+  <p class="section-intro">The foundational concept behind every spacecraft in orbit today.</p>
+
+  <p class="prose">
+    An <span class="hl">artificial satellite</span> is a human-made object placed into orbit around a celestial body — most commonly Earth. Unlike natural satellites such as the Moon, artificial satellites are engineered spacecraft carrying sensors, transmitters, and onboard systems that serve specific missions. Since <span class="hl">Sputnik I in 1957</span>, thousands of satellites have been launched, transforming global communication, navigation, weather forecasting, and scientific research.
+  </p>
+
+  <div class="quote-block">
+    <p class="quote-text">
+      A satellite stays in orbit because it is falling toward Earth — but moving sideways <span class="hl">fast enough to keep missing it.</span>
+    </p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">8,000+</div>
+      <div class="stat-unit">ACTIVE SATELLITES</div>
+      <div class="stat-desc">Currently orbiting Earth (2024)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">1957</div>
+      <div class="stat-unit">FIRST LAUNCH</div>
+      <div class="stat-desc">Sputnik I — USSR</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7.9</div>
+      <div class="stat-unit">KM/S ORBITAL SPEED</div>
+      <div class="stat-desc">Minimum for low Earth orbit</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">36,000</div>
+      <div class="stat-unit">KM ALTITUDE (GEO)</div>
+      <div class="stat-desc">Geostationary orbit height</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     § 02 — HISTORY
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="history">
+  <div class="section-label">§ 02 — HISTORY</div>
+  <h2 class="section-title">From Newton to <span>New Space</span></h2>
+  <p class="section-intro">The key milestones that shaped satellite technology over seven decades.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">1687</div>
+      <div class="tl-title">Newton's Cannonball Thought Experiment</div>
+      <div class="tl-body">Isaac Newton demonstrated mathematically that if a projectile were launched horizontally with enough speed from a high mountain, it would orbit Earth rather than fall back. This was the first theoretical basis for artificial satellites — nearly 270 years before it was physically achieved.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">4 Oct 1957</div>
+      <div class="tl-title">Sputnik I — World's First Artificial Satellite</div>
+      <div class="tl-body">The Soviet Union launched Sputnik I, a polished 83.6 kg sphere carrying only two radio transmitters. It orbited Earth every <span class="hl">96 minutes</span> and transmitted radio pulses at 20 MHz. Its launch triggered the Space Race and proved intercontinental delivery of payloads was feasible.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">31 Jan 1958</div>
+      <div class="tl-title">Explorer I — U.S. Enters the Space Age</div>
+      <div class="tl-body">America's response to Sputnik. Explorer I discovered the <span class="hl">Van Allen radiation belts</span> — zones of charged particles trapped by Earth's magnetic field. It remained in orbit until 1970, proving that scientific instruments on satellites could make fundamental discoveries.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1958</div>
+      <div class="tl-title">NASA Founded</div>
+      <div class="tl-body">The U.S. government established NASA to coordinate civilian space exploration. NASA rapidly evolved satellite technology — launching communication, weather, and scientific satellites throughout the 1960s and beyond.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1962</div>
+      <div class="tl-title">Telstar 1 — First Live TV Across the Atlantic</div>
+      <div class="tl-body">The first active communication satellite, Telstar 1 relayed the first live transatlantic television signal. This marked the dawn of satellite-based global communication — the direct ancestor of today's TV broadcast and internet satellites.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1964</div>
+      <div class="tl-title">Syncom 3 — First Geostationary Satellite</div>
+      <div class="tl-body">Syncom 3 was positioned at 35,786 km above the equator, orbiting at exactly the same rate Earth rotates. From the ground, it appeared <span class="hl">stationary in the sky</span> — making it ideal for continuous TV and communication relay without tracking dishes.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1970s–1990s</div>
+      <div class="tl-title">GPS, Remote Sensing & the Modern Satellite Era</div>
+      <div class="tl-body">GPS navigation satellites, Landsat Earth observation, and weather satellites like GOES transformed how humanity interacts with the planet. By the 1990s, satellites were embedded into defense, agriculture, aviation, and telecommunications infrastructure worldwide.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     § 03 — ORBITS
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="orbits">
+  <div class="section-label">§ 03 — ORBITAL MECHANICS</div>
+  <h2 class="section-title">Orbits &amp; <span>Satellite Dynamics</span></h2>
+  <p class="section-intro">Where a satellite orbits determines everything — its latency, coverage area, power needs, and lifespan.</p>
+
+  <p class="prose">
+    Orbital mechanics follow <span class="hl">Kepler's Laws</span>: satellites in lower orbits move faster and complete orbits more quickly. The altitude chosen is a critical engineering decision — it governs signal delay, atmospheric drag, radiation exposure, and the size of ground footprint covered with each pass.
+  </p>
+
+  <table class="orbit-table">
+    <thead>
+      <tr>
+        <th>Orbit</th>
+        <th>Altitude</th>
+        <th>Period</th>
+        <th>Latency</th>
+        <th>Use Cases</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="orbit-badge badge-leo">LEO</span> Low Earth Orbit</td>
+        <td>200 – 2,000 km</td>
+        <td>90 – 120 min</td>
+        <td>20 – 40 ms</td>
+        <td>ISS, Starlink, imaging, spy satellites</td>
+      </tr>
+      <tr>
+        <td><span class="orbit-badge badge-meo">MEO</span> Medium Earth Orbit</td>
+        <td>2,000 – 35,786 km</td>
+        <td>2 – 24 hrs</td>
+        <td>77 – 160 ms</td>
+        <td>GPS, GLONASS, Galileo navigation</td>
+      </tr>
+      <tr>
+        <td><span class="orbit-badge badge-geo">GEO</span> Geostationary Orbit</td>
+        <td>35,786 km</td>
+        <td>24 hrs (sync)</td>
+        <td>600 ms</td>
+        <td>TV broadcast, weather, fixed comms</td>
+      </tr>
+      <tr>
+        <td>HEO — Highly Elliptical</td>
+        <td>Variable</td>
+        <td>12+ hrs</td>
+        <td>Variable</td>
+        <td>Polar coverage, Molniya orbits</td>
+      </tr>
+      <tr>
+        <td>SSO — Sun-Synchronous</td>
+        <td>600 – 800 km</td>
+        <td>~98 min</td>
+        <td>~30 ms</td>
+        <td>Earth observation, consistent lighting</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="prose">
+    <span class="hl">Orbital perturbations</span> — small disturbances from Earth's non-uniform gravity, atmospheric drag, solar radiation pressure, and the Moon's gravity — cause orbits to shift over time. Satellites carry onboard propulsion to make small corrections called <em>station-keeping manoeuvres</em>. When fuel runs out, the satellite is decommissioned.
+  </p>
+</section>
+
+<!-- ══════════════════════════════
+     § 04 — SUBSYSTEMS
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="subsystems">
+  <div class="section-label">§ 04 — ENGINEERING</div>
+  <h2 class="section-title">Satellite <span>Subsystems</span></h2>
+  <p class="section-intro">Every satellite is a system of interdependent subsystems — each critical to survival in the harsh space environment.</p>
+
+  <div class="subsystems">
+    <div class="pill"><div class="pill-dot"></div>Structural</div>
+    <div class="pill"><div class="pill-dot"></div>Power (EPS)</div>
+    <div class="pill"><div class="pill-dot"></div>Thermal Control</div>
+    <div class="pill"><div class="pill-dot"></div>ADCS</div>
+    <div class="pill"><div class="pill-dot"></div>Communications</div>
+    <div class="pill"><div class="pill-dot"></div>Propulsion</div>
+    <div class="pill"><div class="pill-dot"></div>TT&C</div>
+    <div class="pill"><div class="pill-dot"></div>C&DH</div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🏗️</div>
+      <div class="card-label">Structural Subsystem</div>
+      <div class="card-title">The Frame</div>
+      <div class="card-body">Provides the mechanical skeleton that holds all components together and withstands the violent vibrations of launch. Built from lightweight materials like aluminium alloys, carbon fibre, and titanium to minimise mass while maintaining rigidity.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-label">Power Subsystem (EPS)</div>
+      <div class="card-title">Solar Panels + Batteries</div>
+      <div class="card-body">Solar panels convert sunlight into electricity. Batteries store power for periods when the satellite passes through Earth's shadow (eclipses). Power management is critical — all other subsystems depend on it. Most satellites use <span class="hl">GaAs solar cells</span> for efficiency in space.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌡️</div>
+      <div class="card-label">Thermal Control (TCS)</div>
+      <div class="card-title">Managing Extremes</div>
+      <div class="card-body">Space swings from +150°C in direct sunlight to −150°C in shadow — within the same orbit. The TCS uses passive methods (surface coatings, insulation blankets) and active methods (heaters, heat pipes) to keep all components within their operating temperature range.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧭</div>
+      <div class="card-label">ADCS</div>
+      <div class="card-title">Attitude Control</div>
+      <div class="card-body">Determines and controls satellite orientation. Uses sensors (star trackers, gyroscopes, magnetometers) to know which way the satellite is pointing, and actuators (reaction wheels, thrusters) to adjust it. Critical for keeping antennas toward Earth and solar panels toward the Sun.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <div class="card-label">Communications</div>
+      <div class="card-title">The Payload Link</div>
+      <div class="card-body">Handles transmission and reception of signals between satellite and ground stations. Uses frequency bands: <span class="hl">L, S, C, X, Ku, Ka</span> — higher frequencies carry more data but are more affected by rain and atmospheric absorption. Directional antennas maximise gain.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <div class="card-label">TT&C</div>
+      <div class="card-title">Telemetry, Tracking & Command</div>
+      <div class="card-body">The lifeline between ground operators and the satellite. Telemetry sends housekeeping data (temperatures, voltages, status) to Earth. Tracking determines the satellite's exact position. Command uplinks instructions from ground control to the satellite's onboard computer.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     § 05 — TYPES OF SATELLITES
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="types">
+  <div class="section-label">§ 05 — CATEGORIES</div>
+  <h2 class="section-title">Types of <span>Satellites</span></h2>
+  <p class="section-intro">Satellites are classified by their primary mission — each category reshaping a different sector of human activity.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📺</div>
+      <div class="card-label">Category 01</div>
+      <div class="card-title">Communication Satellites</div>
+      <div class="card-body">Act as radio relay stations in orbit. They receive signals from one ground station, amplify them, and retransmit to another location — enabling intercontinental phone calls, TV broadcasts, and internet connectivity. <span class="hl">GEO is preferred</span> for broadcast due to fixed sky position.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🗺️</div>
+      <div class="card-label">Category 02</div>
+      <div class="card-title">Navigation Satellites (GNSS)</div>
+      <div class="card-body">GPS (USA), GLONASS (Russia), Galileo (EU), and BeiDou (China) form global constellations at MEO. Each satellite broadcasts precise timing signals; receivers calculate position by measuring time differences from <span class="hl">at least 4 satellites</span> — accurate to within centimetres.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <div class="card-label">Category 03</div>
+      <div class="card-title">Earth Observation / Remote Sensing</div>
+      <div class="card-body">Carry cameras and sensors to observe Earth's surface. Used for agriculture monitoring, deforestation tracking, disaster response, urban planning, and military reconnaissance. ESA's Sentinel series and NASA's Landsat are key examples — imaging in visible, infrared, and radar wavelengths.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌦️</div>
+      <div class="card-label">Category 04</div>
+      <div class="card-title">Weather Satellites</div>
+      <div class="card-body">Monitor atmospheric conditions, cloud patterns, storms, and sea surface temperatures. GEO weather satellites (like GOES) provide continuous regional images; LEO satellites provide full global coverage. Their data feeds into <span class="hl">every weather forecast</span> on Earth.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔭</div>
+      <div class="card-label">Category 05</div>
+      <div class="card-title">Scientific Satellites</div>
+      <div class="card-body">Dedicated to scientific research — observing the universe without atmospheric distortion (Hubble Space Telescope), studying Earth's magnetic field, measuring ozone levels, or analysing cosmic radiation. These expand fundamental human knowledge beyond what ground-based instruments can achieve.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <div class="card-label">Category 06</div>
+      <div class="card-title">Internet Mega-Constellations</div>
+      <div class="card-body">SpaceX Starlink, Amazon Kuiper, and OneWeb deploy hundreds to thousands of LEO satellites to deliver broadband internet globally — including to remote regions with no terrestrial infrastructure. Starlink alone has over <span class="hl">6,000 satellites</span> as of 2024, the largest constellation ever.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     § 06 — CHALLENGES
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="challenges">
+  <div class="section-label">§ 06 — CHALLENGES</div>
+  <h2 class="section-title">Problems Facing <span>Satellite Technology</span></h2>
+  <p class="section-intro">The space environment and scale of modern satellite operations present serious challenges that must be solved.</p>
+
+  <ul class="challenge-list">
+    <li>
+      <div class="ch-icon">🗑️</div>
+      <div class="ch-text">
+        <div class="ch-title">Space Debris</div>
+        Over 27,000 pieces of trackable debris orbit Earth — defunct satellites, rocket stages, and fragments from collisions. At orbital speeds (~7.9 km/s), even a 1 cm fragment carries the kinetic energy of a grenade. The <span class="hl">Kessler Syndrome</span> describes a cascade where debris generates more debris, eventually making some orbits unusable.
+      </div>
+    </li>
+    <li>
+      <div class="ch-icon">🚦</div>
+      <div class="ch-text">
+        <div class="ch-title">Orbital Congestion</div>
+        Popular orbital slots — especially GEO and LEO — are becoming crowded. Mega-constellations raise the risk of conjunctions (close approaches) and collisions. Coordination through the ITU (International Telecommunication Union) and new collision-avoidance systems are essential.
+      </div>
+    </li>
+    <li>
+      <div class="ch-icon">💸</div>
+      <div class="ch-text">
+        <div class="ch-title">High Launch Costs</div>
+        Despite reusable rockets (SpaceX Falcon 9), launching a satellite remains expensive — $2,500–$10,000 per kilogram to LEO. Cost limits access for smaller nations and organisations, though smallsats and rideshare programmes are reducing this barrier significantly.
+      </div>
+    </li>
+    <li>
+      <div class="ch-icon">☢️</div>
+      <div class="ch-text">
+        <div class="ch-title">Radiation Environment</div>
+        Space is flooded with cosmic rays, solar energetic particles, and trapped radiation in the Van Allen belts. Radiation degrades solar cells, corrupts memory, and can permanently damage electronics. Satellites require <span class="hl">radiation-hardened components</span> — more expensive and less powerful than commercial equivalents.
+      </div>
+    </li>
+    <li>
+      <div class="ch-icon">🔒</div>
+      <div class="ch-text">
+        <div class="ch-title">Cybersecurity Threats</div>
+        Satellites are increasingly targeted by electronic warfare — jamming (disrupting the signal), spoofing (sending false signals), and cyberattacks on ground station software. A successful attack on a navigation or communications satellite can have cascading effects across critical infrastructure on Earth.
+      </div>
+    </li>
+    <li>
+      <div class="ch-icon">🌑</div>
+      <div class="ch-text">
+        <div class="ch-title">Astronomical Light Pollution</div>
+        Large LEO constellations create visible streaks in astronomical observations, interfering with telescope imaging. The astronomical community and satellite operators are negotiating standards for satellite brightness, darker coatings, and adjusted orbital parameters to mitigate the impact.
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════
+     § 07 — FUTURE TRENDS
+══════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="future">
+  <div class="section-label">§ 07 — THE FUTURE</div>
+  <h2 class="section-title">Where Satellites <span>Are Heading</span></h2>
+  <p class="section-intro">The next decade will see satellite technology evolve faster than any previous era.</p>
+
+  <div class="future-grid">
+    <div class="future-card">
+      <div class="future-icon">🛰️</div>
+      <div class="future-title">Mega-Constellations</div>
+      <div class="future-desc">Thousands of LEO satellites delivering global broadband — Starlink, Kuiper, and OneWeb racing to connect every corner of Earth.</div>
+    </div>
+    <div class="future-card">
+      <div class="future-icon">🔬</div>
+      <div class="future-title">CubeSats & SmallSats</div>
+      <div class="future-desc">Miniaturised satellites the size of a shoebox democratise space access for universities, startups, and developing nations.</div>
+    </div>
+    <div class="future-card">
+      <div class="future-icon">🔗</div>
+      <div class="future-title">Quantum Satellite Comms</div>
+      <div class="future-desc">Quantum key distribution via satellite promises theoretically unbreakable encryption — China's Micius satellite has already demonstrated this at intercontinental distances.</div>
+    </div>
+    <div class="future-card">
+      <div class="future-icon">🤖</div>
+      <div class="future-title">On-Orbit Servicing</div>
+      <div class="future-desc">Robotic spacecraft that can refuel, repair, and reposition satellites extend their operational lives — reducing debris and launch costs dramatically.</div>
+    </div>
+    <div class="future-card">
+      <div class="future-icon">🌙</div>
+      <div class="future-title">Lunar & Deep Space</div>
+      <div class="future-desc">NASA's Artemis programme and commercial lunar missions will require new satellite infrastructure around the Moon for navigation and communications.</div>
+    </div>
+    <div class="future-card">
+      <div class="future-icon">♻️</div>
+      <div class="future-title">Active Debris Removal</div>
+      <div class="future-desc">ESA's ClearSpace-1 mission (2026) will attempt to capture and deorbit a defunct satellite — the first active debris removal mission in history.</div>
+    </div>
+  </div>
+
+  <div class="quote-block" style="margin-top:3rem;">
+    <p class="quote-text">
+      Satellites are not just infrastructure — they are the <span class="hl">nervous system of our civilisation,</span> silently enabling every GPS route, weather alert, and video call across the planet.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">SAT_NOTES // DATA_COMM</div>
+  <div class="footer-info" style="margin-top:6px;">Stephen Obodai · PUIT/24210092 · Arcada University of Applied Sciences</div>
+  <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--muted);"><a href="index.html" style="color: var(--accent); text-decoration: none;">← Back to Data Communications Portfolio</a></div>
+</footer>
+
+<script>
+  /* ─── GENERATE STAR FIELD ─── */
+  (function(){
+    const sf = document.getElementById('starfield');
+    for(let i=0;i<160;i++){
+      const s=document.createElement('div');
+      s.className='star';
+      const x=Math.random()*100, y=Math.random()*100;
+      const op=(Math.random()*0.5+0.1).toFixed(2);
+      const d=(Math.random()*4+2).toFixed(1);
+      const delay=-(Math.random()*5).toFixed(1);
+      s.style.cssText=`left:${x}%;top:${y}%;--op:${op};--d:${d}s;--delay:${delay}s;width:${Math.random()<0.2?3:1.5}px;height:${Math.random()<0.2?3:1.5}px`;
+      sf.appendChild(s);
+    }
+  })();
+
+  /* ─── SCROLL REVEAL (IntersectionObserver) ─── */
+  const revealTargets = document.querySelectorAll(
+    '.section-label, .section-title, .section-intro, .prose, .card, .tl-item, .orbit-table, .subsystems, .challenge-list li, .future-card, .stat-card, .quote-text, .big-stat'
+  );
+  const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('vis'), i*60);
+        revealObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12});
+  revealTargets.forEach(el=>revealObs.observe(el));
+
+  /* ─────────────────────────────────────────────
+     APPLE-STYLE HIGHLIGHT ANIMATION
+     When .hl elements scroll into view, trigger
+     the glowing sweep animation on the text.
+     After the transition ends, lock the accent color.
+  ───────────────────────────────────────────── */
+  const hlElements = document.querySelectorAll('.hl');
+
+  const hlObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const el = entry.target;
+        // Small delay so page has settled before sweep fires
+        setTimeout(()=>{
+          el.classList.add('fired');
+          // After transition completes, lock to solid accent colour
+          el.addEventListener('transitionend', ()=>{
+            el.classList.remove('fired');
+            el.classList.add('done');
+          }, {once:true});
+        }, 300);
+        hlObs.unobserve(el);
+      }
+    });
+  },{threshold:0.5, rootMargin:'0px 0px -60px 0px'});
+
+  hlElements.forEach(el=>hlObs.observe(el));
+</script>
+</body>
+</html>
