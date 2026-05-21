@@ -502,8 +502,8 @@
     <div class="about-text">
       <h3>Hello, I'm a Data Communications Student</h3>
       <p>i am a dedicated student of Pentecost University majoring in Information Technology. Data Communications has been one of the most illuminating courses in my academic journey, revealing the intricate mechanisms that underpin every digital interaction we make.</p>
-      <p>This portfolio represents my learning journey — from understanding how bits flow across copper wires to grasping the complexity of modern wireless protocols. I believe that understanding how information travels is fundamental to building the connected world of tomorrow.</p>
-      <p>My fascination with data communication grew when I realised that every email, video call, and web page relies on decades of engineering innovation — innovations I am now privileged to study and build upon.</p>
+      <p>This portfolio represents my learning from understanding how bits flow across copper wires to grasping the complexity of modern wireless protocols. I believe that understanding how information travels is fundamental to building the connected world of tomorrow.</p>
+      <p>My fascination with data communication grew when I realised that every email, video call, and web page relies on decades of engineering innovation I am now privileged to study and build upon.</p>
       <div class="about-stats">
         <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">OSI Layers Mastered</div></div>
         <div class="stat-box"><div class="stat-num">12+</div><div class="stat-label">Protocols Studied</div></div>
@@ -725,6 +725,113 @@
   </div>
 </section>
 
+<!-- PGP — PRETTY GOOD PRIVACY -->
+<section id="pgp" style="margin-top: 5rem;">
+  <div class="reveal">
+    <div class="section-label">§ 05b — ENCRYPTION &amp; SECURITY</div>
+    <h2 class="section-title">PGP: Pretty Good <span>Privacy Explained</span></h2>
+    <p class="section-desc">An exploration of PGP encryption — how asymmetric cryptography enables secure email communication and digital signatures in the modern data communications landscape.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; align-items: start;">
+    <!-- PGP Overview -->
+    <div class="reveal">
+      <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent);">What is PGP?</h3>
+      <p style="color: var(--muted); margin-bottom: 1rem;">Pretty Good Privacy (PGP) is a data encryption and decryption program created by Phil Zimmermann in 1991. It became the de facto standard for email encryption and digital signatures — proving that robust cryptography doesn't require government approval or proprietary implementations.</p>
+      
+      <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; margin-top: 1.5rem; color: var(--accent);">How PGP Works</h3>
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.8rem; background: var(--surface); border-radius: 6px; margin-bottom: 0.8rem; border-left: 3px solid var(--accent2); color: var(--muted); font-size: 0.9rem;">
+          <strong style="color: #e2e8f0; display: block; margin-bottom: 0.4rem;">🔑 Hybrid Encryption</strong>
+          Combines RSA (asymmetric) for key exchange and AES (symmetric) for bulk data encryption — the best of both worlds.
+        </li>
+        <li style="padding: 0.8rem; background: var(--surface); border-radius: 6px; margin-bottom: 0.8rem; border-left: 3px solid var(--accent2); color: var(--muted); font-size: 0.9rem;">
+          <strong style="color: #e2e8f0; display: block; margin-bottom: 0.4rem;">🤝 Digital Signatures</strong>
+          Uses your private key to "sign" messages, proving you wrote them and they haven't been tampered with — cryptographic proof of authenticity.
+        </li>
+        <li style="padding: 0.8rem; background: var(--surface); border-radius: 6px; margin-bottom: 0.8rem; border-left: 3px solid var(--accent2); color: var(--muted); font-size: 0.9rem;">
+          <strong style="color: #e2e8f0; display: block; margin-bottom: 0.4rem;">🔐 Public Key Infrastructure</strong>
+          Your public key is freely shared; only you hold the private key. Anyone can encrypt a message for you; only you can decrypt it.
+        </li>
+        <li style="padding: 0.8rem; background: var(--surface); border-radius: 6px; margin-bottom: 0.8rem; border-left: 3px solid var(--accent2); color: var(--muted); font-size: 0.9rem;">
+          <strong style="color: #e2e8f0; display: block; margin-bottom: 0.4rem;">🔗 Web of Trust</strong>
+          PGP doesn't rely on certificate authorities — instead, users form a "web of trust" by signing each other's keys, decentralizing trust.
+        </li>
+      </ul>
+    </div>
+
+    <!-- PGP Impact & Applications -->
+    <div class="reveal">
+      <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent);">Why PGP Matters</h3>
+      <div style="padding: 1.5rem; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
+        <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.8rem; font-family: 'Space Mono', monospace; letter-spacing: 0.05em; text-transform: uppercase;">Historical Significance</div>
+        <p style="color: var(--text); font-size: 0.95rem; line-height: 1.6;">When Zimmermann released PGP in 1991, the U.S. government classified encryption software as "munitions" and nearly prosecuted him. Today, PGP stands as a triumph of open-source cryptography and digital civil liberties — proving that privacy is a right, not a luxury.</p>
+      </div>
+
+      <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent);">Real-World Applications</h3>
+      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+        <div style="padding: 1rem; background: rgba(0, 229, 160, 0.06); border: 1px solid rgba(0, 229, 160, 0.2); border-radius: 6px;">
+          <div style="color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">📧 Secure Email</div>
+          <div style="color: var(--muted); font-size: 0.85rem;">Encrypt sensitive business communications, medical records, legal documents — only the intended recipient can read them.</div>
+        </div>
+        <div style="padding: 1rem; background: rgba(14, 165, 233, 0.06); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 6px;">
+          <div style="color: var(--accent2); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">🔐 Software Distribution</div>
+          <div style="color: var(--muted); font-size: 0.85rem;">Software vendors sign releases with PGP keys, allowing users to verify authenticity and detect tampering before installation.</div>
+        </div>
+        <div style="padding: 1rem; background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 6px;">
+          <div style="color: var(--accent3); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">🛡️ Whistleblowing</div>
+          <div style="color: var(--muted); font-size: 0.85rem;">Journalists use PGP to securely receive anonymous tips from sources. Edward Snowden famously used PGP-encrypted communication.</div>
+        </div>
+      </div>
+
+      <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; margin-top: 1.5rem; color: var(--accent);">The Cryptographic Foundation</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.6;">PGP uses RSA-2048 (or higher) for asymmetric encryption — a 2048-bit key would take 2^128 operations to brute force, a computational impossibility. This is why PGP has remained unbroken for 30+ years despite advances in computing power.</p>
+    </div>
+  </div>
+
+  <!-- PGP Flow Diagram -->
+  <div class="reveal" style="margin-bottom: 3rem; padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;">
+    <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 1.5rem; text-align: center; color: var(--accent);">PGP Message Flow: Encryption to Decryption</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+      <div style="padding: 1rem; background: var(--surface2); border-radius: 6px; text-align: center; border: 1px solid rgba(0, 229, 160, 0.2);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📝</div>
+        <div style="font-weight: 700; color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem;">1. Original Message</div>
+        <div style="color: var(--muted); font-size: 0.8rem;">You write plaintext email or document</div>
+      </div>
+      <div style="padding: 1rem; background: var(--surface2); border-radius: 6px; text-align: center; border: 1px solid rgba(14, 165, 233, 0.2);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔑</div>
+        <div style="font-weight: 700; color: var(--accent2); font-size: 0.9rem; margin-bottom: 0.5rem;">2. Get Recipient's Public Key</div>
+        <div style="color: var(--muted); font-size: 0.8rem;">Retrieve their PGP public key from keyserver</div>
+      </div>
+      <div style="padding: 1rem; background: var(--surface2); border-radius: 6px; text-align: center; border: 1px solid rgba(245, 158, 11, 0.2);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔒</div>
+        <div style="font-weight: 700; color: var(--accent3); font-size: 0.9rem; margin-bottom: 0.5rem;">3. Encrypt &amp; Sign</div>
+        <div style="color: var(--muted); font-size: 0.8rem;">Compress, encrypt with their public key, sign with your private key</div>
+      </div>
+      <div style="padding: 1rem; background: var(--surface2); border-radius: 6px; text-align: center; border: 1px solid rgba(0, 229, 160, 0.2);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📤</div>
+        <div style="font-weight: 700; color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem;">4. Send Ciphertext</div>
+        <div style="color: var(--muted); font-size: 0.8rem;">Transmit encrypted message via any channel (email, chat, etc.)</div>
+      </div>
+      <div style="padding: 1rem; background: var(--surface2); border-radius: 6px; text-align: center; border: 1px solid rgba(14, 165, 233, 0.2);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📥</div>
+        <div style="font-weight: 700; color: var(--accent2); font-size: 0.9rem; margin-bottom: 0.5rem;">5. Recipient Receives</div>
+        <div style="color: var(--muted); font-size: 0.8rem;">They get the encrypted, signed message</div>
+      </div>
+      <div style="padding: 1rem; background: var(--surface2); border-radius: 6px; text-align: center; border: 1px solid rgba(245, 158, 11, 0.2);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔓</div>
+        <div style="font-weight: 700; color: var(--accent3); font-size: 0.9rem; margin-bottom: 0.5rem;">6. Decrypt &amp; Verify</div>
+        <div style="color: var(--muted); font-size: 0.8rem;">They use their private key to decrypt, verify your signature</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-align: center;" class="reveal">
+    <p style="color: var(--muted); margin-bottom: 0.8rem; font-size: 0.95rem;"><strong>PGP Represents</strong> a fundamental principle: cryptography is a human right, and secure communication should be accessible to everyone — not just governments or corporations.</p>
+    <p style="color: var(--text); font-size: 0.9rem; font-style: italic;">Today's TLS/SSL encryption securing your bank account builds on the principles Phil Zimmermann established 30 years ago.</p>
+  </div>
+</section>
+
 <!-- =============================================
      VIDEO SECTION — NO IFRAME, WORKS ANYWHERE
      ============================================= -->
@@ -771,9 +878,9 @@
         <div class="link-meta"><div class="link-title">My Word Assignment</div><div class="link-desc">Data Communications written assignment — full analysis and research paper</div><div class="link-badge">DOWNLOAD .DOCX</div></div>
         <div class="link-arrow">↗</div>
       </a>
-      <a class="link-item" href="https://arcada.fi" target="_blank" rel="noopener noreferrer">
+      <a class="link-item" href="https://pentvars.edu.gh/" target="_blank" rel="noopener noreferrer">
         <div class="link-icon">🏫</div>
-        <div class="link-meta"><div class="link-title">Arcada University of Applied Sciences</div><div class="link-desc">My institution — home of my ICT studies in Helsinki, Finland</div></div>
+        <div class="link-meta"><div class="link-title">Pentecost University</div><div class="link-desc">My institution - The University A+</div></div>
         <div class="link-arrow">↗</div>
       </a>
       <a class="link-item" href="https://www.forouzan.com" target="_blank" rel="noopener noreferrer">
@@ -807,7 +914,7 @@
 <footer>
   <div>
     <div class="footer-brand">DATA_COMM //</div>
-    <div class="footer-info" style="margin-top: 4px;">Data Communications Portfolio · Arcada University</div>
+    <div class="footer-info" style="margin-top: 4px;">Data Communications Portfolio · Pentecost University</div>
   </div>
   <div class="footer-info" style="text-align:center;">Built with knowledge gained from<br/>one transformative semester</div>
   <div class="footer-links">
